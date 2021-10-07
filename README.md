@@ -4,6 +4,10 @@
 ## Get started
 
 ```
+starport scaffold chain github.com/uwezukwechibuzor/blog
+
+cd blog
+
 starport chain serve
 ```
 
