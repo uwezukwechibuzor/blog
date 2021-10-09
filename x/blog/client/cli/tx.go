@@ -32,6 +32,7 @@ func GetTxCmd() *cobra.Command {
 
 		// this line is used by starport scaffolding # 1
 		cmd.AddCommand(CmdCreatePost())
+		cmd.AddCommand(CmdCreateComment())
 
 
 	return cmd
@@ -63,4 +64,31 @@ func CmdCreatePost() *cobra.Command {
 	flags.AddTxFlagsToCmd(cmd)
 
     return cmd
+}
+
+func CmdCreateComment() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "create-comment [body] [post-id]",
+		Short: "Create a new comment",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argBody := args[0]
+			argPostID := args[1]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgCreateComment(clientCtx.GetFromAddress().String(), argBody, argPostID)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
 }
