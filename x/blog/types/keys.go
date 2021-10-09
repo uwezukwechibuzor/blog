@@ -17,10 +17,16 @@ const (
 	MemStoreKey = "mem_blog"
 
 	// PostKey defines the post value store key
-	PostKey= "Post-value-"
+	PostKey = "Post-value-"
 
 	// PostCountKey defines the post count store key
-	PostCountKey= "Post-count-"
+	PostCountKey = "Post-count-"
+
+	//CommentKey defines the comment value store key
+	CommentKey = "Comment-value-"
+
+	// CommentCountKey defines the commenet count store key
+	CommentCountKey = "Comment-count-"
 )
 
 func KeyPrefix(p string) []byte {
