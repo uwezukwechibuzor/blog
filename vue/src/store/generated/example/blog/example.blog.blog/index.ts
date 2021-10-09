@@ -2,10 +2,12 @@ import { txClient, queryClient, MissingWalletError } from './module'
 // @ts-ignore
 import { SpVuexError } from '@starport/vuex'
 
+import { Comment } from "./module/types/blog/comment"
+import { MsgCreateComment } from "./module/types/blog/comment"
 import { Post } from "./module/types/blog/post"
 
 
-export { Post };
+export { Comment, MsgCreateComment, Post };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -47,6 +49,8 @@ const getDefaultState = () => {
 				PostAll: {},
 				
 				_Structure: {
+						Comment: getStructure(Comment.fromPartial({})),
+						MsgCreateComment: getStructure(MsgCreateComment.fromPartial({})),
 						Post: getStructure(Post.fromPartial({})),
 						
 		},
