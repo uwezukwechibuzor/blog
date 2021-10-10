@@ -4,12 +4,10 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgCreateComment } from "./types/blog/comment";
 import { MsgCreatePost } from "./types/blog/post";
 
 
 const types = [
-  ["/example.blog.blog.MsgCreateComment", MsgCreateComment],
   ["/example.blog.blog.MsgCreatePost", MsgCreatePost],
   
 ];
@@ -39,7 +37,6 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgCreateComment: (data: MsgCreateComment): EncodeObject => ({ typeUrl: "/example.blog.blog.MsgCreateComment", value: data }),
     msgCreatePost: (data: MsgCreatePost): EncodeObject => ({ typeUrl: "/example.blog.blog.MsgCreatePost", value: data }),
     
   };
