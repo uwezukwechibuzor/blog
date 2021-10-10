@@ -9,11 +9,33 @@
  * ---------------------------------------------------------------
  */
 
+export interface BlogComment {
+  creator?: string;
+  id?: string;
+  body?: string;
+  postID?: string;
+}
+
 export interface BlogPost {
   creator?: string;
   id?: string;
   title?: string;
   body?: string;
+}
+
+export interface BlogQueryAllCommentResponse {
+  Comment?: BlogComment[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
 }
 
 export interface BlogQueryAllPostResponse {
@@ -29,6 +51,10 @@ export interface BlogQueryAllPostResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface BlogQueryGetCommentResponse {
+  Comment?: BlogComment;
 }
 
 export interface BlogQueryGetPostResponse {
@@ -297,10 +323,51 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title blog/genesis.proto
+ * @title blog/comment.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCommentAll
+   * @request GET:/example/blog/blog/comment
+   */
+  queryCommentAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<BlogQueryAllCommentResponse, RpcStatus>({
+      path: `/example/blog/blog/comment`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryComment
+   * @summary this line is used by starport scaffolding # 2
+   * @request GET:/example/blog/blog/comment/{id}
+   */
+  queryComment = (id: string, params: RequestParams = {}) =>
+    this.request<BlogQueryGetCommentResponse, RpcStatus>({
+      path: `/example/blog/blog/comment/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
@@ -331,7 +398,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryPost
-   * @summary this line is used by starport scaffolding # 2
    * @request GET:/example/blog/blog/post/{id}
    */
   queryPost = (id: string, params: RequestParams = {}) =>

@@ -1,8 +1,27 @@
+export interface BlogComment {
+    creator?: string;
+    id?: string;
+    body?: string;
+    postID?: string;
+}
 export interface BlogPost {
     creator?: string;
     id?: string;
     title?: string;
     body?: string;
+}
+export interface BlogQueryAllCommentResponse {
+    Comment?: BlogComment[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
 }
 export interface BlogQueryAllPostResponse {
     Post?: BlogPost[];
@@ -16,6 +35,9 @@ export interface BlogQueryAllPostResponse {
      *  }
      */
     pagination?: V1Beta1PageResponse;
+}
+export interface BlogQueryGetCommentResponse {
+    Comment?: BlogComment;
 }
 export interface BlogQueryGetPostResponse {
     Post?: BlogPost;
@@ -135,10 +157,33 @@ export declare class HttpClient<SecurityDataType = unknown> {
     request: <T = any, E = any>({ body, secure, path, type, query, format, baseUrl, cancelToken, ...params }: FullRequestParams) => Promise<HttpResponse<T, E>>;
 }
 /**
- * @title blog/genesis.proto
+ * @title blog/comment.proto
  * @version version not set
  */
 export declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryCommentAll
+     * @request GET:/example/blog/blog/comment
+     */
+    queryCommentAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<BlogQueryAllCommentResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryComment
+     * @summary this line is used by starport scaffolding # 2
+     * @request GET:/example/blog/blog/comment/{id}
+     */
+    queryComment: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogQueryGetCommentResponse, RpcStatus>>;
     /**
      * No description
      *
@@ -158,7 +203,6 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      *
      * @tags Query
      * @name QueryPost
-     * @summary this line is used by starport scaffolding # 2
      * @request GET:/example/blog/blog/post/{id}
      */
     queryPost: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogQueryGetPostResponse, RpcStatus>>;

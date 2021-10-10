@@ -3,8 +3,10 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgCreatePost } from "./types/blog/post";
+import { MsgCreateComment } from "./types/blog/comment";
 const types = [
     ["/example.blog.blog.MsgCreatePost", MsgCreatePost],
+    ["/example.blog.blog.MsgCreateComment", MsgCreateComment],
 ];
 export const MissingWalletError = new Error("wallet is required");
 const registry = new Registry(types);
@@ -20,6 +22,7 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     return {
         signAndBroadcast: (msgs, { fee, memo } = { fee: defaultFee, memo: "" }) => client.signAndBroadcast(address, msgs, fee, memo),
         msgCreatePost: (data) => ({ typeUrl: "/example.blog.blog.MsgCreatePost", value: data }),
+        msgCreateComment: (data) => ({ typeUrl: "/example.blog.blog.MsgCreateComment", value: data }),
     };
 };
 const queryClient = async ({ addr: addr } = { addr: "http://localhost:1317" }) => {
