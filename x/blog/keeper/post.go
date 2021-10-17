@@ -10,7 +10,7 @@ import (
 )
 
 // GetPostCount get the total number of post
-func (k Keeper) GetPostCount(ctx sdk.Context) int64 {
+func (k Keeper) GetPostCount(ctx sdk.Context) uint64 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PostCountKey))
 	byteKey := types.KeyPrefix(types.PostCountKey)
 	bz := store.Get(byteKey)
@@ -21,7 +21,7 @@ func (k Keeper) GetPostCount(ctx sdk.Context) int64 {
 	}
 
 	// Parse bytes
-	count, err := strconv.ParseInt(string(bz), 10, 64)
+	count, err := strconv.ParseUint(string(bz), 10, 64)
 	if err != nil {
 		// Panic because the count should be always formattable to int64
 		panic("cannot decode count")
@@ -31,10 +31,10 @@ func (k Keeper) GetPostCount(ctx sdk.Context) int64 {
 }
 
 // SetPostCount set the total number of post
-func (k Keeper) SetPostCount(ctx sdk.Context, count int64) {
+func (k Keeper) SetPostCount(ctx sdk.Context, count uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PostCountKey))
 	byteKey := types.KeyPrefix(types.PostCountKey)
-	bz := []byte(strconv.FormatInt(count, 10))
+	bz := []byte(strconv.FormatUint(count, 10))
 	store.Set(byteKey, bz)
 }
 
@@ -43,7 +43,7 @@ func (k Keeper) CreatePost(ctx sdk.Context, msg types.MsgCreatePost) {
 	count := k.GetPostCount(ctx)
 	var post = types.Post{
 		Creator: msg.Creator,
-		Id:      strconv.FormatInt(count, 10),
+		Id:      strconv.FormatUint(count, 10),
 		Title:   msg.Title,
 		Body:    msg.Body,
 	}
