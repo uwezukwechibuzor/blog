@@ -10,7 +10,7 @@ import (
 )
 
 // GetCommentCount get the total number of comment
-func (k Keeper) GetCommentCount(ctx sdk.Context) int64 {
+func (k Keeper) GetCommentCount(ctx sdk.Context) uint64 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.CommentCountKey))
 	byteKey := types.KeyPrefix(types.CommentCountKey)
 	bz := store.Get(byteKey)
@@ -21,7 +21,7 @@ func (k Keeper) GetCommentCount(ctx sdk.Context) int64 {
 	}
 
 	// Parse bytes
-	count, err := strconv.ParseInt(string(bz), 10, 64)
+	count, err := strconv.ParseUint(string(bz), 10, 64)
 	if err != nil {
 		// Panic because the count should be always formattable to int64
 		panic("cannot decode count")
@@ -31,10 +31,10 @@ func (k Keeper) GetCommentCount(ctx sdk.Context) int64 {
 }
 
 // SetCommentCount set the total number of comment
-func (k Keeper) SetCommentCount(ctx sdk.Context, count int64) {
+func (k Keeper) SetCommentCount(ctx sdk.Context, count uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.CommentCountKey))
 	byteKey := types.KeyPrefix(types.CommentCountKey)
-	bz := []byte(strconv.FormatInt(count, 10))
+	bz := []byte(strconv.FormatUint(count, 10))
 	store.Set(byteKey, bz)
 }
 
@@ -43,7 +43,7 @@ func (k Keeper) CreateComment(ctx sdk.Context, msg types.MsgCreateComment) {
 	count := k.GetCommentCount(ctx)
 	var comment = types.Comment{
 		Creator: msg.Creator,
-		Id:      strconv.FormatInt(count, 10),
+		Id:      strconv.FormatUint(count, 10),
 		Body:    msg.Body,
 		PostID:  msg.PostID,
 	}
