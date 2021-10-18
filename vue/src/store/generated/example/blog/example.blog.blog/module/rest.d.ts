@@ -41,6 +41,17 @@ export interface BlogQueryGetCommentResponse {
 }
 export interface BlogQueryGetPostResponse {
     Post?: BlogPost;
+    Comment?: BlogComment[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
 }
 export interface ProtobufAny {
     "@type"?: string;
@@ -205,6 +216,12 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @name QueryPost
      * @request GET:/example/blog/blog/post/{id}
      */
-    queryPost: (id: string, params?: RequestParams) => Promise<HttpResponse<BlogQueryGetPostResponse, RpcStatus>>;
+    queryPost: (id: string, query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<BlogQueryGetPostResponse, RpcStatus>>;
 }
 export {};

@@ -46,10 +46,15 @@ message QueryAllCommentResponse {
 }
 message QueryGetPostRequest {
 	string id = 1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
+//comment field added to QueryGetPostResponse
 message QueryGetPostResponse {
 	Post Post = 1;
+	repeated Comment Comment = 2;
+	cosmos.base.query.v1beta1.PageResponse pagination = 3;
+
 }
 
 message QueryAllPostRequest {

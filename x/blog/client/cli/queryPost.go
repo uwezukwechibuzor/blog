@@ -48,7 +48,7 @@ func CmdListPost() *cobra.Command {
 
 func CmdShowPost() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-post [id]",
+		Use:   "get-post [id]",
 		Short: "shows a post",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -185,9 +185,10 @@ export class Api extends HttpClient {
          * @name QueryPost
          * @request GET:/example/blog/blog/post/{id}
          */
-        this.queryPost = (id, params = {}) => this.request({
+        this.queryPost = (id, query, params = {}) => this.request({
             path: `/example/blog/blog/post/${id}`,
             method: "GET",
+            query: query,
             format: "json",
             ...params,
         });

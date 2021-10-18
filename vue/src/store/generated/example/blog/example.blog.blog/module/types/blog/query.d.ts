@@ -19,9 +19,13 @@ export interface QueryAllCommentResponse {
 }
 export interface QueryGetPostRequest {
     id: string;
+    pagination: PageRequest | undefined;
 }
+/** comment field added to QueryGetPostResponse */
 export interface QueryGetPostResponse {
     Post: Post | undefined;
+    Comment: Comment[];
+    pagination: PageResponse | undefined;
 }
 export interface QueryAllPostRequest {
     pagination: PageRequest | undefined;

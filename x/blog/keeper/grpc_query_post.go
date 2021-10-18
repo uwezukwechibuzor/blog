@@ -44,12 +44,34 @@ func (k Keeper) Post(c context.Context, req *types.QueryGetPostRequest) (*types.
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
-
+    //fetching post data
 	var post types.Post
 	ctx := sdk.UnwrapSDKContext(c)
+	store_ := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PostKey))
+	k.cdc.MustUnmarshal(store_.Get(types.KeyPrefix(types.PostKey+req.Id)), &post)
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PostKey))
-	k.cdc.MustUnmarshal(store.Get(types.KeyPrefix(types.PostKey + req.Id)), &post)
+	//when a post is queried they will have corresponding comments
+	var comments []*types.Comment
+	store := ctx.KVStore(k.storeKey)
+	commentStore := prefix.NewStore(store, types.KeyPrefix(types.CommentKey))
+	
+	pageRes, err := query.Paginate(commentStore, req.Pagination, func(key []byte, value []byte) error {
+		var comment types.Comment
 
-	return &types.QueryGetPostResponse{Post: &post}, nil
+		if err := k.cdc.Unmarshal(value, &comment); err != nil {
+			return err
+		}
+        //return only comments where post id equals comment postId
+		if post.Id == comment.PostID {
+		comments = append(comments, &comment)
+	    }
+		return nil
+		
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryGetPostResponse{Post: &post,Comment: comments, Pagination: pageRes}, nil
 }

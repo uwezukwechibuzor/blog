@@ -43,7 +43,7 @@ func CmdListComment() *cobra.Command {
 
 func CmdShowComment() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-comment [id]",
+		Use:   "get-comment [id]",
 		Short: "shows a comment",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

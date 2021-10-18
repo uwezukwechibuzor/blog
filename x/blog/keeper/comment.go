@@ -50,7 +50,7 @@ func (k Keeper) CreateComment(ctx sdk.Context, msg types.MsgCreateComment) {
 
 	//blogPostOwner cannot comment on his/her post
 	blogPostOwner := k.GetPostOwner(ctx, msg.PostID)
-	if blogPostOwner == msg.Creator {
+	if blogPostOwner == comment.Creator{
 		panic("You can not comment on the blog post")
 	}
 
