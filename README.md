@@ -25,11 +25,11 @@ Run the command
 
 blogd query blog list-post
 
-blogd query blog get-post
+blogd query blog get-post [id]
 
 blogd query blog list-comment
 
-blogd query blog get-comment
+blogd query blog get-comment [id]
 
 
 
