@@ -19,6 +19,20 @@ blogd tx blog create-post "My first post" "This is a post\!" --from=alice
 
 blogd tx blog create-comment "My first post" "0" --from=alice
 
+### Query
+
+Run the command
+
+blogd query blog list-post
+
+blogd query blog get-post
+
+blogd query blog list-comment
+
+blogd query blog get-comment
+
+
+
 
 ### Configure
 
