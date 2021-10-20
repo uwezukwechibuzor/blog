@@ -16,5 +16,4 @@ message MsgCreateComment {
   string creator = 1;
   string body = 2; 
   string postID = 3; 
-  int64 t = 4;
 }

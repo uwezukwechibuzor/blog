@@ -1,6 +1,5 @@
 /* eslint-disable */
-import * as Long from 'long'
-import { util, configure, Writer, Reader } from 'protobufjs/minimal'
+import { Writer, Reader } from 'protobufjs/minimal'
 
 export const protobufPackage = 'example.blog.blog'
 
@@ -15,7 +14,6 @@ export interface MsgCreateComment {
   creator: string
   body: string
   postID: string
-  t: number
 }
 
 const baseComment: object = { creator: '', id: '', body: '', postID: '' }
@@ -124,7 +122,7 @@ export const Comment = {
   }
 }
 
-const baseMsgCreateComment: object = { creator: '', body: '', postID: '', t: 0 }
+const baseMsgCreateComment: object = { creator: '', body: '', postID: '' }
 
 export const MsgCreateComment = {
   encode(message: MsgCreateComment, writer: Writer = Writer.create()): Writer {
@@ -136,9 +134,6 @@ export const MsgCreateComment = {
     }
     if (message.postID !== '') {
       writer.uint32(26).string(message.postID)
-    }
-    if (message.t !== 0) {
-      writer.uint32(32).int64(message.t)
     }
     return writer
   },
@@ -158,9 +153,6 @@ export const MsgCreateComment = {
           break
         case 3:
           message.postID = reader.string()
-          break
-        case 4:
-          message.t = longToNumber(reader.int64() as Long)
           break
         default:
           reader.skipType(tag & 7)
@@ -187,11 +179,6 @@ export const MsgCreateComment = {
     } else {
       message.postID = ''
     }
-    if (object.t !== undefined && object.t !== null) {
-      message.t = Number(object.t)
-    } else {
-      message.t = 0
-    }
     return message
   },
 
@@ -200,7 +187,6 @@ export const MsgCreateComment = {
     message.creator !== undefined && (obj.creator = message.creator)
     message.body !== undefined && (obj.body = message.body)
     message.postID !== undefined && (obj.postID = message.postID)
-    message.t !== undefined && (obj.t = message.t)
     return obj
   },
 
@@ -221,24 +207,9 @@ export const MsgCreateComment = {
     } else {
       message.postID = ''
     }
-    if (object.t !== undefined && object.t !== null) {
-      message.t = object.t
-    } else {
-      message.t = 0
-    }
     return message
   }
 }
-
-declare var self: any | undefined
-declare var window: any | undefined
-var globalThis: any = (() => {
-  if (typeof globalThis !== 'undefined') return globalThis
-  if (typeof self !== 'undefined') return self
-  if (typeof window !== 'undefined') return window
-  if (typeof global !== 'undefined') return global
-  throw 'Unable to locate global object'
-})()
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined
 export type DeepPartial<T> = T extends Builtin
@@ -250,15 +221,3 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER')
-  }
-  return long.toNumber()
-}
-
-if (util.Long !== Long) {
-  util.Long = Long as any
-  configure()
-}
