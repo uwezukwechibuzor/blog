@@ -72,6 +72,18 @@ curl https://get.starport.network/example/blog@latest! | sudo bash
 ```
 `example/blog` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
 
+### QueryListPost
+
+![QueryListPost](https://user-images.githubusercontent.com/66339097/138137887-c541eacf-a64e-49f4-8855-709b460b58b9.png)
+
+### QueryGetPost
+
+![queryGetPost1](https://user-images.githubusercontent.com/66339097/138137984-f2d05520-0c1a-4b53-82e1-e8ff97f58b17.png)
+![queryGetPost2](https://user-images.githubusercontent.com/66339097/138137994-b2623e1a-6f3b-4254-ac77-abb3957820b8.png)
+![queryGetPost3](https://user-images.githubusercontent.com/66339097/138138002-1b8747f3-5418-41bf-8b94-406deb2bd5c7.png)
+![queryGetPost4](https://user-images.githubusercontent.com/66339097/138138006-3d94a747-2f45-47c0-b2d6-fc805c05b4ed.png)
+
+
 ## Learn more
 
 - [Starport](https://github.com/tendermint/starport)
