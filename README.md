@@ -13,26 +13,6 @@ starport chain serve
 
 `serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
 
-### Test transactions
-
-blogd tx blog create-post "My first post" "This is a post\!" --from=alice
-
-blogd tx blog create-comment "My first post" "0" --from=alice
-
-### Query
-
-Run the command
-
-blogd query blog list-post
-
-blogd query blog get-post [id]
-
-blogd query blog list-comment
-
-blogd query blog get-comment [id]
-
-
-
 
 ### Configure
 
@@ -71,6 +51,26 @@ To install the latest version of your blockchain node's binary, execute the foll
 curl https://get.starport.network/example/blog@latest! | sudo bash
 ```
 `example/blog` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
+
+
+### Test transactions
+
+blogd tx blog create-post "My first post" "This is a post\!" --from=alice
+
+blogd tx blog create-comment "My first post" "0" --from=alice
+
+### Query
+
+Run the command
+
+blogd query blog list-post
+
+blogd query blog get-post [id]
+
+blogd query blog list-comment
+
+blogd query blog get-comment [id]
+
 
 ### QueryListPost
 
