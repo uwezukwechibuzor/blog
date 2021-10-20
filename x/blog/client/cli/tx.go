@@ -30,14 +30,12 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-		// this line is used by starport scaffolding # 1
-		cmd.AddCommand(CmdCreatePost())
-		cmd.AddCommand(CmdCreateComment())
-
+	// this line is used by starport scaffolding # 1
+	cmd.AddCommand(CmdCreatePost())
+	cmd.AddCommand(CmdCreateComment())
 
 	return cmd
 }
-
 
 func CmdCreatePost() *cobra.Command {
 	cmd := &cobra.Command{
@@ -47,7 +45,7 @@ func CmdCreatePost() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsTitle := string(args[0])
 			argsBody := string(args[1])
-      
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -63,9 +61,8 @@ func CmdCreatePost() *cobra.Command {
 
 	flags.AddTxFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }
-
 
 func CmdCreateComment() *cobra.Command {
 	cmd := &cobra.Command{
@@ -73,9 +70,9 @@ func CmdCreateComment() *cobra.Command {
 		Short: "Creates a new comment",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
-      argsBody := string(args[0])
-      argsPostID := string(args[1])
-      
+			argsBody := string(args[0])
+			argsPostID := string(args[1])
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -91,5 +88,5 @@ func CmdCreateComment() *cobra.Command {
 
 	flags.AddTxFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }

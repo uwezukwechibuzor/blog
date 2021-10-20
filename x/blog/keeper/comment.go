@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"strconv"
+	"time"
 
-	 "github.com/cosmos/cosmos-sdk/store/prefix"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/example/blog/x/blog/types"
@@ -47,11 +48,17 @@ func (k Keeper) CreateComment(ctx sdk.Context, msg types.MsgCreateComment) {
 		Body:    msg.Body,
 		PostID:  msg.PostID,
 	}
-
-	//blogPostOwner cannot comment on his/her post
+       
+   	//blogPostOwner cannot comment on his/her post
 	blogPostOwner := k.GetPostOwner(ctx, msg.PostID)
-	if blogPostOwner == comment.Creator{
+	if blogPostOwner == comment.Creator {
 		panic("You can not comment on the blog post")
+	}
+    
+	//commenting time is between ctx.BlockTime()-5seconds and ctx.BlockTime() + 5seconds
+   var currentTime  = time.Now()
+    if  int64(currentTime.Second()) <  int64(ctx.BlockTime().Add(time.Second * -5).Second()) || int64(currentTime.Second()) >  int64(ctx.BlockTime().Add(time.Second * +5).Second()){
+		panic("commenting Time is over")
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.CommentKey))

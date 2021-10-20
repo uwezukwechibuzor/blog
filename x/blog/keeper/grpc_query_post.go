@@ -50,7 +50,7 @@ func (k Keeper) Post(c context.Context, req *types.QueryGetPostRequest) (*types.
 	store_ := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PostKey))
 	k.cdc.MustUnmarshal(store_.Get(types.KeyPrefix(types.PostKey+req.Id)), &post)
 
-	//when a post is queried they will have corresponding comments
+	//when a post is queried it will have corresponding comments
 	var comments []*types.Comment
 	store := ctx.KVStore(k.storeKey)
 	commentStore := prefix.NewStore(store, types.KeyPrefix(types.CommentKey))
